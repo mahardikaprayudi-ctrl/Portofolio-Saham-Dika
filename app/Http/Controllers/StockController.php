@@ -72,4 +72,36 @@ class StockController extends Controller
 
         return redirect()->route('stocks.index')->with('success', 'Saham berhasil dihapus.');
     }
+
+    public function updatePrices()
+    {
+        $stocks = Stock::all();
+        $updated = 0;
+        $failed = [];
+
+        foreach ($stocks as $stock) {
+            try {
+                $response = \Illuminate\Support\Facades\Http::timeout(5)
+                    ->get("https://query1.finance.yahoo.com/v8/finance/chart/{$stock->code}.JK");
+
+                $price = $response->json('chart.result.0.meta.regularMarketPrice');
+
+                if ($price) {
+                    $stock->update(['reference_price' => $price]);
+                    $updated++;
+                } else {
+                    $failed[] = $stock->code;
+                }
+            } catch (\Exception $e) {
+                $failed[] = $stock->code;
+            }
+        }
+
+        $message = "{$updated} saham berhasil diupdate.";
+        if (count($failed) > 0) {
+            $message .= ' Gagal: ' . implode(', ', $failed);
+        }
+
+        return redirect()->route('stocks.index')->with('success', $message);
+    }
 }

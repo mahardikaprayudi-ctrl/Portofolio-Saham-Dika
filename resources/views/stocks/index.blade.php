@@ -27,9 +27,18 @@
                         <button type="submit" class="bg-gray-800 text-white px-4 py-2 rounded text-sm">Filter</button>
                     </form>
 
-                    <a href="{{ route('stocks.create') }}" class="bg-blue-600 text-white px-4 py-2 rounded text-sm">
-                        + Tambah Saham
-                    </a>
+                    <div class="flex gap-2">
+                        <form action="{{ route('stocks.update-prices') }}" method="POST" onsubmit="return confirm('Update semua harga saham dari Yahoo Finance? Proses ini mungkin butuh beberapa detik.')">
+                            @csrf
+                            <button type="submit" style="background-color: #16a34a; color: #ffffff;" class="px-4 py-2 rounded text-sm font-medium hover:opacity-90">
+                                Update Harga dari Yahoo Finance
+                            </button>
+                        </form>
+
+                        <a href="{{ route('stocks.create') }}" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded text-sm font-medium">
+                            + Tambah Saham
+                        </a>
+                    </div>
                 </div>
 
                 <table class="w-full text-sm text-left border">

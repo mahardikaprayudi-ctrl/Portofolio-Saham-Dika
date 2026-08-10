@@ -1,15 +1,17 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\StockController;
+use App\Http\Controllers\TransactionController;
+use App\Http\Controllers\JournalController;
+use App\Http\Controllers\DashboardController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -23,22 +25,15 @@ Route::middleware(['auth', 'admin'])->get('/admin-test', function () {
     return 'Selamat datang, Admin!';
 });
 
-use App\Http\Controllers\StockController;
-
 Route::middleware(['auth', 'admin'])->group(function () {
     Route::resource('stocks', StockController::class);
+    Route::post('/stocks-update-prices', [StockController::class, 'updatePrices'])->name('stocks.update-prices');
 });
-
-use App\Http\Controllers\TransactionController;
 
 Route::middleware(['auth'])->group(function () {
     Route::resource('transactions', TransactionController::class);
 });
 
-use App\Http\Controllers\JournalController;
-
 Route::middleware(['auth'])->group(function () {
     Route::resource('journals', JournalController::class);
 });
-
-Route::get('/dashboard', [App\Http\Controllers\DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
