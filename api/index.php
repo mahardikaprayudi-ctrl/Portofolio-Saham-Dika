@@ -1,19 +1,11 @@
 <?php
 
-/*
-|--------------------------------------------------------------------------
-| Enable Full Debugging for Vercel
-|--------------------------------------------------------------------------
-*/
-ini_set('display_errors', '1');
-ini_set('display_startup_errors', '1');
+// 1. Tampilkan error PHP mentah
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-/*
-|--------------------------------------------------------------------------
-| Setup Vercel Read-Only Storage Bypass
-|--------------------------------------------------------------------------
-*/
+// 2. Bypass folder storage read-only Vercel
 $storageDirs = [
     '/tmp/storage/app',
     '/tmp/storage/framework/cache/data',
@@ -28,13 +20,15 @@ foreach ($storageDirs as $dir) {
     }
 }
 
-// Environment overrides for Vercel
 putenv('APP_STORAGE=/tmp/storage');
 putenv('VIEW_COMPILED_PATH=/tmp/storage/framework/views');
 
-/*
-|--------------------------------------------------------------------------
-| Run Laravel Application
-|--------------------------------------------------------------------------
-*/
+// 3. Force APP_KEY & Mode Debug langsung di sini
+putenv('APP_KEY=base64:T2cRudFG8KWbGQTaKH3QFgZQ2H2fNrOwOGl6nQvQLHE=');
+putenv('APP_DEBUG=true');
+putenv('APP_ENV=production');
+putenv('SESSION_DRIVER=cookie');
+putenv('CACHE_STORE=array');
+
+// 4. Jalankan Laravel
 require __DIR__ . '/../public/index.php';
