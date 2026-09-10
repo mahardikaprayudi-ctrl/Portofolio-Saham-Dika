@@ -31,11 +31,14 @@ putenv('SESSION_DRIVER=cookie');
 putenv('CACHE_STORE=array');
 putenv('CACHE_DRIVER=array');
 
-// 4. Inisialisasi Laravel & set storage path ke /tmp
+// 4. Load Composer Autoloader WAJIB di sini
+require __DIR__ . '/../vendor/autoload.php';
+
+// 5. Inisialisasi Laravel & set storage path ke /tmp
 $app = require_once __DIR__ . '/../bootstrap/app.php';
 $app->useStoragePath('/tmp/storage');
 
-// 5. Jalankan aplikasi via Kernel HTTP
+// 6. Jalankan aplikasi via Kernel HTTP
 $kernel = $app->make(Illuminate\Contracts\Http\Kernel::class);
 
 $response = $kernel->handle(
