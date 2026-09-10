@@ -12,7 +12,16 @@ export default {
     theme: {
         extend: {
             fontFamily: {
-                sans: ['Figtree', ...defaultTheme.fontFamily.sans],
+                sans: ['Inter', ...defaultTheme.fontFamily.sans],
+                display: ['Fraunces', 'serif'],
+                mono: ['JetBrains Mono', 'monospace'],
+            },
+            colors: {
+                ink: '#0B1F17',
+                paper: '#F7F5F0',
+                profit: '#1B7A4D',
+                loss: '#B5482E',
+                gold: '#C9A24B',
             },
         },
     },

@@ -1,54 +1,53 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            Tambah Saham Baru
-        </h2>
+        <div>
+            <p class="text-xs font-semibold uppercase tracking-[0.18em] text-[#807B6D]">Master saham</p>
+            <h2 class="font-display text-3xl font-medium text-ink">
+                Tambah Saham Baru
+            </h2>
+        </div>
     </x-slot>
 
-    <div class="py-12">
-        <div class="max-w-2xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6">
+    <div class="bg-paper py-10">
+        <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+            @if ($errors->any())
+                <div class="mb-6 border-l-4 border-[#9A5A46] bg-[#F4E8E1] px-4 py-3 text-sm text-[#7F4A39]">
+                    <ul class="list-inside list-disc">
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
 
-                @if ($errors->any())
-                    <div class="mb-4 p-4 bg-red-100 text-red-700 rounded">
-                        <ul class="list-disc list-inside">
-                            @foreach ($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
-                    </div>
-                @endif
+            <form method="POST" action="{{ route('stocks.store') }}" class="space-y-6 border-t border-[#DAD6C9] pt-8">
+                @csrf
 
-                <form method="POST" action="{{ route('stocks.store') }}">
-                    @csrf
+                <div class="grid gap-2 sm:grid-cols-[180px_1fr] sm:items-start">
+                    <label class="pt-2 text-sm font-semibold text-[#3D3C36]">Kode saham</label>
+                    <input type="text" name="code" value="{{ old('code') }}" class="rounded border-[#CFC8B8] bg-[#FBFAF6] px-3 py-2 font-mono text-sm uppercase text-ink placeholder:font-sans placeholder:normal-case placeholder:text-[#9A9485] focus:border-ink focus:ring-ink" placeholder="Contoh: SIDO">
+                </div>
 
-                    <div class="mb-4">
-                        <label class="block text-sm font-medium mb-1">Kode Saham</label>
-                        <input type="text" name="code" value="{{ old('code') }}" class="w-full border rounded px-3 py-2" placeholder="Contoh: SIDO">
-                    </div>
+                <div class="grid gap-2 sm:grid-cols-[180px_1fr] sm:items-start">
+                    <label class="pt-2 text-sm font-semibold text-[#3D3C36]">Nama emiten</label>
+                    <input type="text" name="name" value="{{ old('name') }}" class="rounded border-[#CFC8B8] bg-[#FBFAF6] px-3 py-2 text-sm text-ink placeholder:text-[#9A9485] focus:border-ink focus:ring-ink" placeholder="Contoh: Sido Muncul">
+                </div>
 
-                    <div class="mb-4">
-                        <label class="block text-sm font-medium mb-1">Nama Emiten</label>
-                        <input type="text" name="name" value="{{ old('name') }}" class="w-full border rounded px-3 py-2" placeholder="Contoh: Sido Muncul">
-                    </div>
+                <div class="grid gap-2 sm:grid-cols-[180px_1fr] sm:items-start">
+                    <label class="pt-2 text-sm font-semibold text-[#3D3C36]">Sektor</label>
+                    <input type="text" name="sector" value="{{ old('sector') }}" class="rounded border-[#CFC8B8] bg-[#FBFAF6] px-3 py-2 text-sm text-ink placeholder:text-[#9A9485] focus:border-ink focus:ring-ink" placeholder="Contoh: Consumer Goods">
+                </div>
 
-                    <div class="mb-4">
-                        <label class="block text-sm font-medium mb-1">Sektor</label>
-                        <input type="text" name="sector" value="{{ old('sector') }}" class="w-full border rounded px-3 py-2" placeholder="Contoh: Consumer Goods">
-                    </div>
+                <div class="grid gap-2 sm:grid-cols-[180px_1fr] sm:items-start">
+                    <label class="pt-2 text-sm font-semibold text-[#3D3C36]">Harga acuan</label>
+                    <input type="number" step="0.01" name="reference_price" value="{{ old('reference_price') }}" class="rounded border-[#CFC8B8] bg-[#FBFAF6] px-3 py-2 font-mono text-sm text-ink placeholder:font-sans placeholder:text-[#9A9485] focus:border-ink focus:ring-ink" placeholder="Contoh: 560">
+                </div>
 
-                    <div class="mb-4">
-                        <label class="block text-sm font-medium mb-1">Harga Acuan</label>
-                        <input type="number" step="0.01" name="reference_price" value="{{ old('reference_price') }}" class="w-full border rounded px-3 py-2" placeholder="Contoh: 560">
-                    </div>
-
-                    <div class="flex gap-2">
-                        <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded">Simpan</button>
-                        <a href="{{ route('stocks.index') }}" class="bg-gray-200 px-4 py-2 rounded">Batal</a>
-                    </div>
-                </form>
-
-            </div>
+                <div class="flex flex-col gap-3 border-t border-[#DAD6C9] pt-6 sm:flex-row sm:justify-end">
+                    <a href="{{ route('stocks.index') }}" class="rounded border border-[#CFC8B8] px-4 py-2 text-center text-sm font-semibold text-[#3D3C36] transition hover:border-ink hover:text-ink">Batal</a>
+                    <button type="submit" class="rounded bg-ink px-4 py-2 text-sm font-semibold text-paper transition hover:bg-[#143125]">Simpan saham</button>
+                </div>
+            </form>
         </div>
     </div>
 </x-app-layout>

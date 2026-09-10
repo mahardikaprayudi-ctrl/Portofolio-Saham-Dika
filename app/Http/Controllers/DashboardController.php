@@ -18,13 +18,20 @@ class DashboardController extends Controller
         return $this->userDashboard();
     }
 
-    private function adminDashboard()
+        private function adminDashboard()
     {
         $totalUsers = User::where('role', 'user')->count();
         $totalStocks = Stock::count();
         $totalTransactions = Transaction::count();
 
-        return view('dashboard', compact('totalUsers', 'totalStocks', 'totalTransactions'));
+        $recentStocks = Stock::latest('updated_at')->take(5)->get();
+
+        $recentTransactions = Transaction::with(['stock', 'user'])
+            ->latest('created_at')
+            ->take(5)
+            ->get();
+
+        return view('dashboard', compact('totalUsers', 'totalStocks', 'totalTransactions', 'recentStocks', 'recentTransactions'));
     }
 
     private function userDashboard()
